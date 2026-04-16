@@ -1,0 +1,46 @@
+﻿Blazium Engine v0.5.0.dev (4.3.2.stable.custom_build).ddfeae266 (2026-04-07 21:05:45 UTC) - https://blazium.app
+
+Running Script: res://tests/test_town_sdk.gd
+	- test_can_instantiate_sdk
+
+[1m=== Script: res://tests/test_town_sdk.gd ===[0m
+  [1mtest_can_instantiate_sdk[0m
+[32;1m		[PASS] TownSdkClient singleton should be automatically initialized[0m
+	- test_connect_to_server
+
+[1m=== Script: res://tests/test_town_sdk.gd ===[0m
+  [1mtest_connect_to_server[0m
+d:\ai_platforms\engine_modules\blazium\bin\blazium.windows.editor.dev.x86_64.console.exe : [SDK] Connecting 
+to 127.0.0.1:7000...
+At line:1 char:1
++ d:\ai_platforms\engine_modules\blazium\bin\blazium.windows.editor.dev ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: ([SDK] Connecting to 127.0.0.1:7000...:String) [], RemoteExcept 
+   ion
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+[SDK] Resolving hostname '127.0.0.1'...
+[SDK] DNS resolved successfully
+[SDK] Initiating ENet connection...
+[SDK] Waiting for connection (5 second timeout)...
+[SDK] ERROR: Connection timeout or refused (no CONNECT event received)
+[SDK]   Possible causes:
+[SDK]   - Server not running on 127.0.0.1:7000
+[SDK]   - Firewall blocking UDP port 7000
+[SDK]   - Server overloaded and not accepting connections
+		[FAIL] Should initiate connection successfully
+		[FAIL] Should establish client connection with the game server within 1 second
+	- test_invalid_authentication
+
+[1m=== Script: res://tests/test_town_sdk.gd ===[0m
+  [1mtest_invalid_authentication[0m
+[33;1m		[WARN] Pending: Skipping auth test because client failed to connect to game-server[0m
+
+=================================
+AUTOWORK TEST SUMMARY
+Tests Run: 3
+Passing Asserts: 1
+Failing Asserts: 2
+Warnings: 1
+=================================
+

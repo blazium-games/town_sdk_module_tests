@@ -1,0 +1,35 @@
+﻿Blazium Engine v0.5.0.dev (4.3.2.stable.custom_build).ddfeae266 (2026-04-07 21:05:45 UTC) - https://blazium.app
+
+Running Script: res://tests/test_town_sdk.gd
+	- test_can_instantiate_sdk
+
+[1m=== Script: res://tests/test_town_sdk.gd ===[0m
+  [1mtest_can_instantiate_sdk[0m
+d:\ai_platforms\engine_modules\blazium\bin\blazium.windows.editor.dev.x86_64.console.exe : 		[FAIL] 
+TownSdkClient singleton should be automatically initialized
+At line:1 char:1
++ d:\ai_platforms\engine_modules\blazium\bin\blazium.windows.editor.dev ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (		[FAIL] TownSd...lly initialized:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+	- test_connect_to_server
+
+[1m=== Script: res://tests/test_town_sdk.gd ===[0m
+  [1mtest_connect_to_server[0m
+SCRIPT ERROR: Cannot call method 'connect_to_server' on a null value.
+   at: test_connect_to_server (res://tests/test_town_sdk.gd:20)
+	- test_invalid_authentication
+
+[1m=== Script: res://tests/test_town_sdk.gd ===[0m
+  [1mtest_invalid_authentication[0m
+SCRIPT ERROR: Cannot call method 'is_client_connected' on a null value.
+   at: test_invalid_authentication (res://tests/test_town_sdk.gd:40)
+
+=================================
+AUTOWORK TEST SUMMARY
+Tests Run: 3
+Passing Asserts: 0
+Failing Asserts: 1
+=================================
+
