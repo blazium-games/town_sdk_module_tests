@@ -2,8 +2,9 @@ extends Node
 class_name TestHelper
 
 var server_pid: int = -1
-var privkey_path: String = "d:/ai_platforms/engine_modules/town_server/config/privkey.pem"
-var turnbattle_exe: String = "d:/ai_platforms/engine_modules/town_server/build/windows/bin/turnbattle.exe"
+var privkey_path: String = OS.get_environment("TOWN_SDK_PRIVKEY_PATH") if not OS.get_environment("TOWN_SDK_PRIVKEY_PATH").is_empty() else "d:/ai_platforms/engine_modules/town_server/config/privkey.pem"
+var turnbattle_exe: String = OS.get_environment("TOWN_SDK_TURNBATTLE_EXE") if not OS.get_environment("TOWN_SDK_TURNBATTLE_EXE").is_empty() else "d:/ai_platforms/engine_modules/town_server/build/windows/bin/turnbattle.exe"
+var server_workdir: String = OS.get_environment("TOWN_SDK_SERVER_DIR") if not OS.get_environment("TOWN_SDK_SERVER_DIR").is_empty() else "d:/ai_platforms/engine_modules/town_server"
 var crypto_key: CryptoKey = null
 
 func start_server() -> bool:
@@ -12,7 +13,7 @@ func start_server() -> bool:
     
     print("[TestHelper] Starting turnbattle.exe on port 7005...")
     # Launch in background natively with correct WorkingDirectory
-    var ps_cmd = "Start-Process -FilePath '" + turnbattle_exe + "' -WorkingDirectory 'd:/ai_platforms/engine_modules/town_server' -WindowStyle Hidden -PassThru | Select-Object -ExpandProperty Id"
+    var ps_cmd = "Start-Process -FilePath '" + turnbattle_exe + "' -WorkingDirectory '" + server_workdir + "' -WindowStyle Hidden -PassThru | Select-Object -ExpandProperty Id"
     var output = []
     OS.execute("powershell.exe", ["-Command", ps_cmd], output)
     if output.size() > 0:
