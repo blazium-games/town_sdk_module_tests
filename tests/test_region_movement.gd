@@ -7,6 +7,8 @@ var got_move: bool = false
 var current_snapshot: Dictionary = {}
 
 func _before_all() -> void:
+    if not FileAccess.file_exists("d:/ai_platforms/engine_modules/town_server/build/windows/bin/turnbattle.exe"):
+        return
     var HelperClass = preload("res://tests/test_helper.gd")
     helper = HelperClass.new()
     helper.start_server()
@@ -21,6 +23,8 @@ func _after_all() -> void:
         helper.queue_free()
 
 func _before_each() -> void:
+    if sdk == null:
+        return
     got_snapshot = false
     got_move = false
     
@@ -48,6 +52,9 @@ func _on_move_state(state: Dictionary) -> void:
     got_move = true
 
 func test_region_snapshot() -> void:
+    if OS.get_environment("TOWN_LIVE_TESTS") != "1":
+        pending("Requires local turnbattle.exe (set TOWN_LIVE_TESTS=1)")
+        return
     sdk.snapshot_received.connect(_on_snapshot)
     
     sdk.enter_region("spawn")
@@ -68,6 +75,9 @@ func test_region_snapshot() -> void:
     sdk.snapshot_received.disconnect(_on_snapshot)
 
 func test_movement_broadcast() -> void:
+    if OS.get_environment("TOWN_LIVE_TESTS") != "1":
+        pending("Requires local turnbattle.exe (set TOWN_LIVE_TESTS=1)")
+        return
     sdk.snapshot_received.connect(_on_snapshot)
     sdk.move_state.connect(_on_move_state)
     

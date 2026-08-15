@@ -4,6 +4,8 @@ var helper: Object
 var sdk: Object
 
 func _before_all() -> void:
+    if not FileAccess.file_exists("d:/ai_platforms/engine_modules/town_server/build/windows/bin/turnbattle.exe"):
+        return
     var HelperClass = preload("res://tests/test_helper.gd")
     helper = HelperClass.new()
     helper.start_server()
@@ -16,6 +18,9 @@ func _after_all() -> void:
         helper.queue_free()
 
 func test_simple_server_connection() -> void:
+    if OS.get_environment("TOWN_LIVE_TESTS") != "1":
+        pending("Requires local turnbattle.exe (set TOWN_LIVE_TESTS=1)")
+        return
     assert_not_null(sdk, "TownSDK singleton should be found")
     if not sdk:
         return

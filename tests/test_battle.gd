@@ -6,6 +6,8 @@ var battle_started: bool = false
 var battle_payload: Dictionary = {}
 
 func _before_all() -> void:
+    if not FileAccess.file_exists("d:/ai_platforms/engine_modules/town_server/build/windows/bin/turnbattle.exe"):
+        return
     var HelperClass = preload("res://tests/test_helper.gd")
     helper = HelperClass.new()
     helper.start_server()
@@ -20,6 +22,8 @@ func _after_all() -> void:
         helper.queue_free()
 
 func _before_each() -> void:
+    if sdk == null:
+        return
     battle_started = false
     
     if not sdk.is_client_connected():
@@ -35,6 +39,9 @@ func _on_battle_start(battle: Dictionary) -> void:
     battle_payload = battle
 
 func test_battle_action_invalid() -> void:
+    if OS.get_environment("TOWN_LIVE_TESTS") != "1":
+        pending("Requires local turnbattle.exe (set TOWN_LIVE_TESTS=1)")
+        return
     sdk.authenticate(helper.mint_jwt("battle_user"))
     helper.attempt_wait_for_condition(get_tree(), func():
         sdk.poll(0.1); OS.delay_msec(100)
@@ -54,6 +61,9 @@ func test_battle_action_invalid() -> void:
     assert_false(res, "Sanity wait completed without crashing or locking")
 
 func test_leave_battle_graceful() -> void:
+    if OS.get_environment("TOWN_LIVE_TESTS") != "1":
+        pending("Requires local turnbattle.exe (set TOWN_LIVE_TESTS=1)")
+        return
     sdk.leave_battle("some_random_id")
     
     var res = helper.attempt_wait_for_condition(get_tree(), func():

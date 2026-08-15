@@ -6,6 +6,8 @@ var got_admin_stats: bool = false
 var admin_stats_payload: Dictionary = {}
 
 func _before_all() -> void:
+    if not FileAccess.file_exists("d:/ai_platforms/engine_modules/town_server/build/windows/bin/turnbattle.exe"):
+        return
     var HelperClass = preload("res://tests/test_helper.gd")
     helper = HelperClass.new()
     helper.start_server()
@@ -20,6 +22,8 @@ func _after_all() -> void:
         helper.queue_free()
 
 func _before_each() -> void:
+    if sdk == null:
+        return
     got_admin_stats = false
     
     if not sdk.is_client_connected():
@@ -35,6 +39,9 @@ func _on_admin_stats(payload: Dictionary) -> void:
     admin_stats_payload = payload
 
 func test_admin_permissions_pass() -> void:
+    if OS.get_environment("TOWN_LIVE_TESTS") != "1":
+        pending("Requires local turnbattle.exe (set TOWN_LIVE_TESTS=1)")
+        return
     # Authing as True Admin
     sdk.authenticate(helper.mint_jwt("admin_test_user", true))
     helper.attempt_wait_for_condition(get_tree(), func():
@@ -55,6 +62,9 @@ func test_admin_permissions_pass() -> void:
     sdk.admin_stats_received.disconnect(_on_admin_stats)
     
 func test_admin_permissions_fail() -> void:
+    if OS.get_environment("TOWN_LIVE_TESTS") != "1":
+        pending("Requires local turnbattle.exe (set TOWN_LIVE_TESTS=1)")
+        return
     # Reconnecting to reset context
     sdk.disconnect_from_server()
     sdk.connect_to_server("127.0.0.1", 7005)

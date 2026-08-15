@@ -6,6 +6,8 @@ var reconnect_attempted: bool = false
 var reconnected: bool = false
 
 func _before_all() -> void:
+    if not FileAccess.file_exists("d:/ai_platforms/engine_modules/town_server/build/windows/bin/turnbattle.exe"):
+        return
     var HelperClass = preload("res://tests/test_helper.gd")
     helper = HelperClass.new()
     helper.start_server()
@@ -22,6 +24,8 @@ func _after_all() -> void:
 
 
 func _before_each() -> void:
+    if sdk == null:
+        return
     reconnect_attempted = false
     reconnected = false
     
@@ -39,6 +43,9 @@ func _on_reconnected(resume_state) -> void:
     reconnected = true
 
 func test_auto_reconnect_fire() -> void:
+    if OS.get_environment("TOWN_LIVE_TESTS") != "1":
+        pending("Requires local turnbattle.exe (set TOWN_LIVE_TESTS=1)")
+        return
     # Need to auth so we get a session to reconnect to
     sdk.authenticate(helper.mint_jwt("reconnect_user"))
     helper.attempt_wait_for_condition(get_tree(), func():

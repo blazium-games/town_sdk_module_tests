@@ -6,6 +6,8 @@ var is_connected: bool = false
 var auth_failed: bool = false
 
 func _before_all() -> void:
+    if not FileAccess.file_exists("d:/ai_platforms/engine_modules/town_server/build/windows/bin/turnbattle.exe"):
+        return
     var HelperClass = preload("res://tests/test_helper.gd")
     helper = HelperClass.new()
     helper.start_server()
@@ -20,6 +22,8 @@ func _after_all() -> void:
         helper.queue_free()
 
 func _before_each() -> void:
+    if sdk == null:
+        return
     auth_failed = false
     if not sdk.is_client_connected():
         sdk.connect_to_server("127.0.0.1", 7005)
@@ -35,6 +39,9 @@ func _on_disconnect(reason: String) -> void:
     auth_failed = true
 
 func test_valid_auth() -> void:
+    if OS.get_environment("TOWN_LIVE_TESTS") != "1":
+        pending("Requires local turnbattle.exe (set TOWN_LIVE_TESTS=1)")
+        return
     assert_true(sdk.is_client_connected(), "Should be connected before auth test")
     
     var local_auth_ok = false
@@ -61,6 +68,9 @@ func test_valid_auth() -> void:
     sdk.disconnect_from_server()
     
 func test_invalid_auth() -> void:
+    if OS.get_environment("TOWN_LIVE_TESTS") != "1":
+        pending("Requires local turnbattle.exe (set TOWN_LIVE_TESTS=1)")
+        return
     # Attempting to auth with an unsinged/badly signed dummy token
     sdk.disconnected.connect(_on_disconnect)
     var invalid_jwt = helper.mint_invalid_jwt("user_attacker")
